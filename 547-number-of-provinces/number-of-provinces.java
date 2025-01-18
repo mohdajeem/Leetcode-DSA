@@ -16,7 +16,8 @@ class Solution {
         for(int i = 0;i<adj.size();i++){
             if(!vis[i]){
                 c++;
-                dfs(adj, vis, i);
+                // dfs(adj, vis, i);
+                bfs(adj, vis, i);
             }
         }
         return c;
@@ -26,6 +27,20 @@ class Solution {
         for(int it : adj.get(s)){
             if(!vis[it]){
                 dfs(adj, vis, it);
+            }
+        }
+    }
+    public void bfs(ArrayList<ArrayList<Integer>> adj, boolean[] vis, int s){
+        Queue<Integer> q = new LinkedList<>();
+        q.add(s);
+        vis[s] = true;
+        while(!q.isEmpty()){
+            int p = q.poll();
+            for(int it : adj.get(p)){
+                if(!vis[it]){
+                    q.add(it);
+                    vis[it] = true;
+                }
             }
         }
     }
