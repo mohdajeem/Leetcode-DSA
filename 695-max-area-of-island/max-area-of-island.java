@@ -19,12 +19,13 @@ class Solution {
         q.add(new Pair(sr,sc));
         int countArea = 1;
         vis[sr][sc]=true;
+        int[] drow = {0,-1,0,1};
+        int[] dcol = {1,0,-1,0};
         while(!q.isEmpty()){
             Pair p = q.poll();
             int row = p.row;
             int col = p.col;
-            int[] drow = {0,-1,0,1};
-            int[] dcol = {1,0,-1,0};
+            
             for(int i = 0;i<4;i++){
                 int nrow = row+drow[i];
                 int ncol = col+dcol[i];
