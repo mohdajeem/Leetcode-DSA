@@ -4,7 +4,7 @@ class Solution {
         long N = (long) n;
         if(N<0){
             x = 1/x;
-            N = -N;
+            // N = -N;
         }
         return fastSolve(x,N);
         // if(n > 0){
