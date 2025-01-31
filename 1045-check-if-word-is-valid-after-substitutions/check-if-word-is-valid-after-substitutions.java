@@ -2,8 +2,8 @@ class Solution {
     public boolean isValid(String s) {
         if(s.charAt(0) != 'a') return false;
         Stack<Character> st = new Stack<>();
-        st.push(s.charAt(0));
-        int i = 1;
+        // st.push(s.charAt(0));
+        int i = 0;
         while(i < s.length()){
             if(s.charAt(i) == 'c'){
                 StringBuilder sb = new StringBuilder();
