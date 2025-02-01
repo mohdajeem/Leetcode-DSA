@@ -7,22 +7,30 @@ class Solution {
         for(int[] ar : dp){
             Arrays.fill(ar, -1);
         }
-        return useMemo(m-1, n-1, obstacleGrid, dp);
+        // return useMemo(m-1, n-1, obstacleGrid, dp);
+        return useTabluation(m,n,obstacleGrid);
     }
+    // optimization 
+    // public int useOptimization
+
     // using tabuation 
     public int useTabluation(int m, int n, int[][] arr){
         int[][] dp = new int[m][n];
+        if(arr[0][0] == 1) return 0;
+        dp[0][0] = 1;
+        for(int i=1;i<m;i++){
+            dp[i][0] = (arr[i][0] == 0 && dp[i-1][0]==1) ? 1 : 0;
+        }
+        for(int j=1;j<n;j++){
+            dp[0][j] = (arr[0][j] == 0 && dp[0][j-1] == 1) ? 1: 0;
+        }
 
-        for(int i = 0;i<m;i++){
-            for(int j = 0;j<n;j++){
-                if(i == 0 && j == 0 && arr[i][j] != 1){
-                    dp[0][0] = 1;
-                } else if(arr[i][j] != 1){
-                    int up = 0;
-                    if(i>0) up = arr[i-1][j];
-                    int left = 0;
-                    if(j >0) left = arr[i][j-1];
-                    dp[i][j] = up+left;
+        for(int i = 1;i<m;i++){
+            for(int j = 1;j<n;j++){
+                if(arr[i][j] != 1){
+                    dp[i][j] = dp[i-1][j]+dp[i][j-1];
+                } else{
+                    dp[i][j] = 0;
                 }
             }
         }
