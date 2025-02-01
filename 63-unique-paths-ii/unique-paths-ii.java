@@ -7,8 +7,8 @@ class Solution {
         for(int[] ar : dp){
             Arrays.fill(ar, -1);
         }
-        // return useMemo(m-1, n-1, obstacleGrid, dp);
-        return useTabluation(m,n,obstacleGrid);
+        return useMemo(m-1, n-1, obstacleGrid, dp);
+        // return useTabluation(m,n,obstacleGrid);
     }
     // optimization 
     // public int useOptimization
