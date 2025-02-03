@@ -14,7 +14,8 @@ class Solution {
         //     Arrays.fill(arr,-1);
         // }
         // return min(0,0,trian,dp);
-        return tab(trian);
+        // return tab(trian);
+        return optimized(trian);
     }
     public int min(int i, int j, int[][] trian, int[][] dp){
         if(i == trian.length-1) return trian[i][j];
@@ -40,7 +41,24 @@ class Solution {
             }
         }
         return dp[0][0];
+    }
+    public int optimized(int[][] arr){
+        int n = arr.length;
+        int[] prev = new int[n];
+        int[] curr = new int[n];
 
+        for(int j = 0;j<n;j++){
+            prev[j] = arr[n-1][j];
+        }
 
+        for(int i = n-2;i>=0;i--){
+            for(int j = 0;j<=i;j++){
+                int down = prev[j];
+                int diag = prev[j+1];
+                curr[j] = arr[i][j] + Math.min(down,diag);
+            }
+            prev =curr;
+        }
+        return prev[0];
     }
 }
