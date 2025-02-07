@@ -11,8 +11,28 @@ class Solution {
         int t = sum/2;
         int[][] dp = new int[n][t+1];
         for(int[] ar: dp) Arrays.fill(ar,-1);
-        return subsetSumEqual(n-1, t, nums, dp);
+        // return subsetSumEqual(n-1, t, nums, dp);
+        return tabulation(nums, n, sum);
         
+    }
+    public boolean tabulation(int[] nums, int n, int s){
+        int t = s/2;
+        boolean[][] dp = new boolean[n][t+1];
+        // dp[0][nums[0]] = true;
+        for(int i = 0;i<n;i++){
+            dp[i][0] = true;
+        }
+        for(int ind = 1;ind<n;ind++){
+            for(int  tar = 1;tar<=t;tar++){
+                boolean notTake = dp[ind-1][tar];
+                boolean take = false;
+                if(nums[ind] <= tar){
+                    take = dp[ind-1][tar-nums[ind]];
+                }
+                dp[ind][tar] = take || notTake;
+            }
+        }
+        return dp[n-1][t];
     }
 
     public boolean subsetSumEqual(int ind, int t, int[] nums,int[][] dp){
