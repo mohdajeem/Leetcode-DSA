@@ -1,26 +1,34 @@
 class Solution {
     public boolean canPartition(int[] nums) {
+        int n = nums.length;
         int sum = 0;
-        for(int i =0;i<nums.length;i++){
+        for(int i = 0;i<n;i++){
             sum+=nums[i];
         }
-        if(sum % 2 != 0) return false;
-        int target = sum/2;
-        Integer[][] dp = new Integer[nums.length][target+1];
-
-        return subsetSum(nums.length-1,target, nums,dp);
-
+        if(sum%2 != 0) return false;
+        // return subsetSumEqual(n-1, sum/2, nums);
+        // Now we will do memoization in this function
+        int t = sum/2;
+        int[][] dp = new int[n][t+1];
+        for(int[] ar: dp) Arrays.fill(ar,-1);
+        return subsetSumEqual(n-1, t, nums, dp);
+        
     }
-    public boolean subsetSum(int ind, int target, int[] nums, Integer[][] dp){
-        if(target == 0) return true;
-        if(ind == 0) return nums[0] == target;
-        if(dp[ind][target] != null) return dp[ind][target] == 1;
-        boolean nonTake = subsetSum(ind-1, target, nums, dp);
-        boolean take = false;
-        if(nums[ind] <= target) {
-            take = subsetSum(ind-1, target-nums[ind],nums,dp);
+
+    public boolean subsetSumEqual(int ind, int t, int[] nums,int[][] dp){
+
+        // base Case 
+        if(ind == 0){
+            return t == nums[ind];
         }
-        dp[ind][target] = (nonTake || take) ? 1 : 0;
-        return (nonTake || take);
+        if(t==0) return true;
+        if(dp[ind][t] != -1) return dp[ind][t] == 1;
+        boolean notTake = subsetSumEqual(ind-1, t, nums,dp);
+        boolean take = false;
+        if(nums[ind] <= t){
+            take = subsetSumEqual(ind-1, t-nums[ind], nums,dp);
+        }
+        dp[ind][t] = (take||notTake) ? 1 : 0;
+        return take || notTake;
     }
 }
