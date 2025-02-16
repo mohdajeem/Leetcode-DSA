@@ -1,13 +1,24 @@
 class Solution {
     public int coinChange(int[] coins, int amount) {
-        int[] dp = new int[amount+1];
-        Arrays.fill(dp, amount+1);
-        dp[0] = 0;
-        for(int i = 0;i<coins.length;i++){
-            for(int j = coins[i];j<=amount;j++){
-                dp[j] = Math.min(dp[j],dp[j - coins[i]]+1);
-            }
+        int n = coins.length;
+        int[][] dp = new int[n][amount+1];
+        for(int[] ar : dp){
+            Arrays.fill(ar,-1);
         }
-        return dp[amount]>amount?-1 : dp[amount];
+        int ans = f(n-1, amount, coins,dp);
+        return  ans== (int) 1e7 ? -1 : ans;
+        
+    }
+    public int f(int ind, int amount, int[] coins,int[][] dp){
+        if(amount == 0) return 0;
+        if(ind<0 || amount < 0) return (int)1e7;
+        if(dp[ind][amount] != -1) return dp[ind][amount];
+        int notTake = f(ind-1, amount, coins,dp);
+        int take = (int)1e7;
+        if(amount >= coins[ind]){
+            take = 1+f(ind, amount-coins[ind], coins,dp);
+        }
+
+        return dp[ind][amount]=Math.min(notTake, take);
     }
 }
