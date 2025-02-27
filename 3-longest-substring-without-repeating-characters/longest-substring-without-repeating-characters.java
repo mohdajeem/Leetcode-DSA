@@ -1,6 +1,5 @@
 class Solution {
     public int lengthOfLongestSubstring(String s) {
-        int n = s.length();
         Queue<Character> q = new LinkedList<>();
         HashSet<Character> set = new HashSet<>();
         int ans = 0;
@@ -11,14 +10,14 @@ class Solution {
                     set.remove(q.peek());
                     q.remove();
                 }
-                q.remove();
+                if(!q.isEmpty()) q.remove();
                 q.add(ch);
             } else{
-                set.add(ch);
                 q.add(ch);
+                set.add(ch);
             }
-            ans=Math.max(ans,q.size());
         }
+        ans = Math.max(ans, q.size());
         return ans;
     }
 }
