@@ -15,27 +15,23 @@
  */
 class Solution {
     public List<Integer> inorderTraversal(TreeNode root) {
-        // i will do iterative order traversal
-        Stack<TreeNode> st = new Stack<>();
         List<Integer> ans = new ArrayList<>();
+        Stack<TreeNode> st = new Stack<>();
         if(root == null) return ans;
-        st.push(root);
-        // jb tk root.left != null -> push(root)
-        // when we get 
+        TreeNode node = root;
         while(true){
-            while(root.left != null){
-                st.push(root.left);
-                root = root.left;
+            if(node != null){
+                st.push(node);
+                node = node.left;
+            } else{
+                if(st.isEmpty()){
+                    break;
+                }
+                TreeNode rem = st.pop();
+                ans.add(rem.val);
+                node = rem.right;
             }
-            TreeNode node = st.pop();
-            ans.add(node.val);
-            if(node.right != null) {
-                root = node.right;
-                st.push(root);
-            }
-            if(st.isEmpty() && root.left == null && root.right == null) break;
         }
         return ans;
-
     }
 }
