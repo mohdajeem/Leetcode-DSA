@@ -1,64 +1,20 @@
 class Solution {
     public int minimumTotal(List<List<Integer>> triangle) {
-        int n = triangle.size();
-        int[][] trian = new int[n][n];
-        int i = 0;
-        for(List<Integer> list : triangle){
-            for(int j = 0;j < list.size();j++){
-                trian[i][j] = list.get(j);
-            }
-            i++;
+        int n = triangle.size(), m = triangle.get(n-1).size();
+        int[][] dp = new int[n][m];
+        for(int[] ar : dp){
+            Arrays.fill(ar,-1);
         }
-        // int[][] dp = new int[n][n];
-        // for(int[] arr : dp){
-        //     Arrays.fill(arr,-1);
-        // }
-        // return min(0,0,trian,dp);
-        // return tab(trian);
-        return optimized(trian);
+        return f(0,0,triangle,dp);
     }
-    public int min(int i, int j, int[][] trian, int[][] dp){
-        if(i == trian.length-1) return trian[i][j];
+    public int f(int i, int j, List<List<Integer>> triangle,int[][] dp){
+        if(i == triangle.size()-1){
+            return triangle.get(i).get(j);
+        }
         if(dp[i][j] != -1) return dp[i][j];
-        int down = min(i+1,j,trian,dp);
-        int diag = min(i+1, j+1, trian,dp);
-
-        return dp[i][j] = trian[i][j] + Math.min(down, diag);
-    }
-    public int tab(int[][] trian){
-        int n = trian.length;
-        int[][] dp = new int[n][n];
-
-        // base case from the recursion
-        for(int j = 0;j<n;j++){
-            dp[n-1][j]=trian[n-1][j];
-        }
-        for(int i = n-2;i>=0;i--){
-            for(int j = 0;j<=i;j++){
-                int down = dp[i+1][j];
-                int diag = dp[i+1][j+1];
-                dp[i][j] = trian[i][j] + Math.min(down, diag);
-            }
-        }
-        return dp[0][0];
-    }
-    public int optimized(int[][] arr){
-        int n = arr.length;
-        int[] prev = new int[n];
-        int[] curr = new int[n];
-
-        for(int j = 0;j<n;j++){
-            prev[j] = arr[n-1][j];
-        }
-
-        for(int i = n-2;i>=0;i--){
-            for(int j = 0;j<=i;j++){
-                int down = prev[j];
-                int diag = prev[j+1];
-                curr[j] = arr[i][j] + Math.min(down,diag);
-            }
-            prev =curr;
-        }
-        return prev[0];
+        int down = f(i+1,j,triangle,dp);
+        int diag = f(i+1,j+1,triangle,dp);
+        int min = triangle.get(i).get(j)+Math.min(down,diag);
+        return dp[i][j]=min;
     }
 }
