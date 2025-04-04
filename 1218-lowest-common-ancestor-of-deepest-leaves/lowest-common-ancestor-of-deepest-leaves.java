@@ -15,15 +15,40 @@
  */
 class Solution {
     public TreeNode lcaDeepestLeaves(TreeNode root) {
-        if(root.left == null && root.right == null) return root;
-        int[] maxDepth1 = new int[1];
-        int[] maxDepth2 = new int[1];
-        int[] leftDec = new int[1];
-        int[] rightDec = new int[1];
-        recRight(root,0,maxDepth1, rightDec);
-        recLeft(root,0,maxDepth2, leftDec);
-        return  ances(root, leftDec, rightDec);
+        // if(root.left == null && root.right == null) return root;
+        // int[] maxDepth1 = new int[1];
+        // int[] maxDepth2 = new int[1];
+        // int[] leftDec = new int[1];
+        // int[] rightDec = new int[1];
+        // recRight(root,0,maxDepth1, rightDec);
+        // recLeft(root,0,maxDepth2, leftDec);
+        // return  ances(root, leftDec, rightDec);
+        HashMap<TreeNode, Integer> map = new HashMap<>();
+        dfsMap(root, map);
+        return dfs(root, map);
     }
+    public TreeNode dfs(TreeNode root, HashMap<TreeNode, Integer> map){
+        if(root == null) return root;
+        int leftH = root.left != null ? map.get(root.left) : 0;
+        int rightH = root.right != null ? map.get(root.right) : 0;
+        if(leftH == rightH){
+            return root;
+        } else if(leftH > rightH){
+            return dfs(root.left, map);
+        }
+        return dfs(root.right, map);
+    }
+    public int dfsMap(TreeNode root, HashMap<TreeNode, Integer> map){
+        if(root == null) return 0;
+        int left = dfsMap(root.left, map);
+        int right = dfsMap(root.right, map);
+        // operation
+        int height =1+Math.max(left, right);
+        map.put(root, height);
+        return height;
+
+    }
+    /*
     public TreeNode ances(TreeNode root, int[] p, int[] q){
         if(root == null || root.val == p[0] || root.val == q[0]){
             return root;
@@ -62,4 +87,6 @@ class Solution {
         recRight(root.right, depth+1, maxDepth, rightDec);
         recRight(root.left, depth+1, maxDepth, rightDec);
     }
+    */
+
 }
