@@ -23,10 +23,32 @@ class Solution {
         // recRight(root,0,maxDepth1, rightDec);
         // recLeft(root,0,maxDepth2, leftDec);
         // return  ances(root, leftDec, rightDec);
-        HashMap<TreeNode, Integer> map = new HashMap<>();
-        dfsMap(root, map);
-        return dfs(root, map);
+        // ------------------------
+        // method 2
+        // HashMap<TreeNode, Integer> map = new HashMap<>();
+        // dfsMap(root, map);
+        // return dfs(root, map);
+
+        // m3
+        return singleDfs(root).node;
+
     }
+    // m3 - single dfs - create a pair class - node, and depth
+    public Pair singleDfs(TreeNode root){
+        if(root == null) return new Pair(root, 0);
+        Pair left = singleDfs(root.left);
+        Pair right = singleDfs(root.right);
+
+        if(left.depth == right.depth){
+            return new Pair(root, left.depth+1);
+        } else if(left.depth > right.depth){
+            return new Pair(left.node, left.depth+1);
+        }
+
+        return new Pair(right.node, right.depth+1);
+    }
+
+    // m2
     public TreeNode dfs(TreeNode root, HashMap<TreeNode, Integer> map){
         if(root == null) return root;
         int leftH = root.left != null ? map.get(root.left) : 0;
@@ -89,4 +111,13 @@ class Solution {
     }
     */
 
+}
+
+class Pair{
+    TreeNode node;
+    int depth;
+    public Pair(TreeNode node, int depth){
+        this.node = node;
+        this.depth = depth;
+    }
 }
