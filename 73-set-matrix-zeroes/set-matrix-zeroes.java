@@ -1,29 +1,26 @@
 class Solution {
     public void setZeroes(int[][] matrix) {
-        int n = matrix.length;
-        int m = matrix[0].length;
-        boolean[][] vis = new boolean[n][m];
+        HashSet<Integer> set = new HashSet<>();
+        int n = matrix.length, m = matrix[0].length;
+        boolean flag = false;
         for(int i =0;i<n;i++){
-            for(int j =0;j<m;j++){
-                if(matrix[i][j] == 0) vis[i][j] = true;
-            }
-        }
-
-        for(int i =0;i<n;i++){
-            for(int j = 0;j<m;j++){
-                if(vis[i][j]){
-                    makeZero(matrix, i, j, vis);
+            for(int j=0;j<m;j++){
+                if(matrix[i][j] ==0){
+                    set.add(j);
+                    flag=true;
                 }
             }
+            if(flag){
+                for(int j =0;j<m;j++){
+                    matrix[i][j]=0;
+                }
+            }
+            flag=false;
         }
-    }
-    public void makeZero(int[][] matrix, int i, int j,boolean[][] vis){
-
-        for(int z = 0;z<matrix[0].length;z++){
-            matrix[i][z] = 0;
-        }
-        for(int z = 0;z<matrix.length;z++){
-            matrix[z][j] = 0;
+        for(int val : set){
+            for(int i =0;i<n;i++){
+                matrix[i][val]=0;
+            }
         }
     }
 }
