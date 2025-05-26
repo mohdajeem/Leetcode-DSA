@@ -1,17 +1,17 @@
 class Solution {
     public List<List<Integer>> subsets(int[] nums) {
         List<List<Integer>> ans = new ArrayList<>();
-        int n = nums.length;
-        int subsets = 1 << n;
-        for(int num =0;num < subsets;num++){
-            List<Integer> list = new ArrayList<>();
-            for(int i =0;i<n;i++){
-                if((num & (1<<i)) != 0) {
-                    list.add(nums[i]);
-                }
-            }
-            ans.add(list);
-        }
+        rec(0,nums,new ArrayList<>(), ans);
         return ans;
+    }
+    public void rec(int ind, int[] nums, List<Integer> list, List<List<Integer>> ans){
+        if(ind == nums.length){
+            ans.add(new ArrayList<>(list));
+            return;
+        }
+        list.add(nums[ind]);
+        rec(ind+1, nums, list,ans);
+        list.remove(list.size()-1);
+        rec(ind+1,nums,list,ans);
     }
 }
