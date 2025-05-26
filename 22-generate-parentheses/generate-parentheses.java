@@ -1,20 +1,18 @@
 class Solution {
     public List<String> generateParenthesis(int n) {
-        List<String> ans = new LinkedList<>();
-        f(n,0,0,"",ans);
+        List<String> ans = new ArrayList<>();
+        f(n,n,n,"", ans);
         return ans;
     }
-    public void f(int n, int open, int close, String s, List<String> ans){
-        if(close == n && open==n){
+    public void f(int countL, int countR, int n, String s, List<String> ans){
+        if(countL < 0 || countR < 0) return;
+        if(countL == 0 && countR == 0){
             ans.add(s);
             return;
         }
-
-        if(open < n){
-            f(n, open+1, close, s+"(", ans);
-        }
-        if(close < open){
-            f(n, open, close+1, s+")", ans);
+        f(countL-1,countR,n, s+"(",ans);
+        if(countL < countR){
+            f(countL, countR-1, n, s+")",ans);
         }
     }
 }
