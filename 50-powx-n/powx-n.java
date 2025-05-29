@@ -1,39 +1,16 @@
 class Solution {
     public double myPow(double x, int n) {
-        double ans = 0;
-        long N = (long) n;
-        if(N<0){
-            x = 1/x;
-            // N = -N;
-        }
-        return fastSolve(x,N);
-        // if(n > 0){
-        //     ans = solvePos(x,N);
-        // } else if(n < 0){
-        //     ans = solveNeg(x,N);
-        // } else{
-        //     ans = 1;
-        // }
-        // return ans;
-        
+        // return rec(x,n);
+        if(n<0) return rec(1/x,n);
+        return rec(x,n);
+
     }
-    public double fastSolve(double x, long n){
-        if(n == 0) return 1;
-        double half = fastSolve(x, n/2);
-        if(n%2 == 0) return half * half;
-        else return half*half*x;
+    public double rec(double x, int n){
+        if(n==0) return 1;
+        if(n == 1) return x;
+        double half = rec(x, n/2);
+        double res = half*half;
+        if((n&1) != 0) res = res * x;
+        return res;
     }
-    public double solvePos(double x, long n){
-        if(n==1){
-            return x;
-        }
-        return x*solvePos(x,n-1);
-    }
-    public double solveNeg(double x, long n){
-        if(n== -1){
-            return 1/x;
-        }
-        return (1/x)*solveNeg(x, n+1);
-    }
-    
 }
