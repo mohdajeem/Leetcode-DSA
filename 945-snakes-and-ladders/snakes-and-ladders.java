@@ -13,7 +13,7 @@ class Solution {
                 int t = x + i;
                 int row = (t - 1) / n;
                 int col = (t - 1) % n;
-                int v = board[n - 1 - row][(row % 2 == 1) ? (n - 1 - col) : col];
+                int v = board[n - 1 - row][((row&1) == 1) ? (n - 1 - col) : col];
                 int y = (v > 0 ? v : t);
                 if (y == n * n) return min_rolls[x] + 1;
                 if (min_rolls[y] == -1) {
