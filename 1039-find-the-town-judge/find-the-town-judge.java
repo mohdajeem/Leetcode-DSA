@@ -25,29 +25,5 @@ class Solution {
             if(ind[i] == (n-1) && out[i] == 0) return i+1;
         }
         return -1;
-        // Queue<Integer> q = new LinkedList<>();
-        // for(int i =0;i<n;i++){
-        //     if(ind[i]==0) {
-        //         ans.add(i+1);
-        //         q.add(i);
-        //     }
-        // }
-        // while(!q.isEmpty()){
-        //     int node = q.remove();
-        //     for(int it : adj.get(node)){
-        //         ind[it]--;
-        //         if(ind[it]==0) {
-        //             q.add(it);
-        //             ans.add(it+1);
-        //         }
-        //     }
-        // }
-        // for(int i =0;i<n;i++){
-        //     if(ind[i] != 0) return -1;
-        // }
-        // int res = ans.get(0);
-        // // System.out.println(res);
-        // // System.out.println(adj.get(res-1).size());
-        // return adj.get(res-1).size() >= (n-1) ? res : -1;
     }
 }
