@@ -15,27 +15,37 @@
  */
 class Solution {
     int max = 0;
+    int count = 1;
+    TreeNode prev = null;
     public int[] findMode(TreeNode root) {
-        HashMap<Integer, Integer> map = new HashMap<>();
-        dfs(root, map);
-        List<Integer> ans = new ArrayList<>();
-        for(int key : map.keySet()){
-            if(map.get(key) == max){
-                ans.add(key);
+        List<Integer> list = new ArrayList<>();
+        dfs(root, list);
+        int[] ans = new int[list.size()];
+        for(int i =0;i<list.size();i++){
+            ans[i] = list.get(i);
+        }
+        return ans;
+        
+    }
+    public void dfs(TreeNode root, List<Integer> list){
+        if(root == null) return;
+        dfs(root.left, list);
+        if(prev != null){
+            if(prev.val == root.val){
+                count++;
+            } else{
+                count = 1;
             }
         }
-        return ans.stream().mapToInt(Integer::intValue).toArray();
-    }
-    public void dfs(TreeNode root, HashMap<Integer, Integer> map){
-        if(root == null) return;
-        // have to perform some task
-        map.put(root.val, map.getOrDefault(root.val,0)+1);
-        max = Math.max(map.get(root.val), max);
-        if(root.left != null){
-            dfs(root.left,map);
+        if(count > max){
+            max = count;
+            list.clear();
+            list.add(root.val);
+        } else if(count == max) {
+            list.add(root.val);
         }
-        if(root.right != null){
-            dfs(root.right, map);
-        }
+
+        prev = root;
+        dfs(root.right, list);
     }
 }
