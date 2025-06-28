@@ -1,16 +1,32 @@
 class Solution {
     public int minSubArrayLen(int target, int[] nums) {
-        int l = 0, r = 0, n = nums.length;
-        int sum = 0;
-        int ans = Integer.MAX_VALUE;
-        while(r < n){
-            sum += nums[r];
-            while(sum >= target){ 
-                ans = Math.min(ans, r-l+1);
-                sum-=nums[l++];
+        int s = 0, e = nums.length;
+        int ans = 0;
+        while(s <= e){
+            int mid = s + (e-s)/2;
+            if(windowFind(mid,nums, target)){
+                ans = mid;
+                e = mid-1;
+            } else{
+                s = mid+1;
             }
-            r++;
         }
-        return ans == Integer.MAX_VALUE ? 0 : ans;
+        return ans;
+    }
+    public boolean windowFind(int size, int[] nums, int tar){
+        int sum = 0;
+        int l = 0, r = 0, n = nums.length;
+        while(r < size){
+            sum += nums[r++];
+        }
+        if(sum >= tar) return true;
+        while(r<n){
+            sum+=nums[r];
+            sum -= nums[l];
+            r++;
+            l++;
+            if(sum >= tar) return true;
+        }
+        return false;
     }
 }
