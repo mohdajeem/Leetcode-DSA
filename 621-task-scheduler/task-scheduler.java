@@ -1,19 +1,19 @@
 class Solution {
     public int leastInterval(char[] tasks, int n) {
-        HashMap<Character, Integer> map = new HashMap<>();
-        for(int i = 0;i<tasks.length;i++){
-            map.put(tasks[i], map.getOrDefault(tasks[i],0)+1);
+        int[] freq = new int[26];
+        for(char ch : tasks){
+            freq[ch-'A']++;
         }
-        PriorityQueue<Integer> pq = new PriorityQueue<>((obj1, obj2) -> {
-            return obj2-obj1;
-        });
-        for(char key : map.keySet()){
-            pq.add(map.get(key));
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a,b) -> Integer.compare(b,a));
+        for(int i =0;i<26;i++){
+            if(freq[i] > 0){
+                pq.add(freq[i]);
+            }
         }
         int time = 0;
         while(!pq.isEmpty()){
             List<Integer> list = new ArrayList<>();
-            for(int i = 1;i<=n+1;i++){
+            for(int i =1;i<=n+1;i++){
                 if(!pq.isEmpty()){
                     int it = pq.remove();
                     it--;
@@ -21,11 +21,9 @@ class Solution {
                 }
             }
             for(int it : list){
-                if(it > 0){
-                    pq.add(it);
-                }
+                if(it > 0) pq.add(it);
             }
-            time += pq.isEmpty() ? list.size() : (n+1);
+            time += pq.isEmpty() ? list.size() : n+1;
         }
         return time;
     }
