@@ -1,7 +1,8 @@
 class Solution {
     public int numDistinct(String s, String t) {
         int n = s.length(), m = t.length();
-        return tabulation(n,m, s, t);
+        return optimized(n,m,s,t);
+        // return tabulation(n,m, s, t);
         // int[][] dp = new int[n+1][m+1];
         // for(int[] ar : dp) Arrays.fill(ar, -1);
         // return rec(0,0, s, t, dp);
@@ -21,6 +22,18 @@ class Solution {
             }
         }
         return dp[n][m];
+    }
+    public int optimized(int n, int m, String s, String t){
+        int[] prev = new int[m+1];
+        prev[0] = 1;
+        for(int i = 1;i<=n;i++){
+            for(int j=m;j>=1;j--){
+                if(s.charAt(i-1) == t.charAt(j-1)){
+                    prev[j] += prev[j-1];
+                }
+            }
+        }
+        return prev[m];
     }
     public int rec(int i, int j, String s, String t, int[][] dp){
         if(j == t.length()) return 1;
