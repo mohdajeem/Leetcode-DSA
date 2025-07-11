@@ -1,0 +1,20 @@
+class Solution {
+    public int maxProfit(int[] prices, int fee) {
+        int[][] dp = new int[prices.length+1][2];
+        for(int[] ar : dp)  Arrays.fill(ar, -1);
+        return rec(0,0,fee,prices, dp);
+    }
+    public int rec(int ind, int buy, int fee, int[] prices, int[][] dp){
+        if(ind == prices.length) return 0;
+        
+        if(dp[ind][buy] != -1) return dp[ind][buy];
+        int profit= 0;
+        if(buy == 0){
+            profit = Math.max(-prices[ind]+rec(ind+1,1,fee,prices, dp), rec(ind+1,0,fee,prices, dp));
+        }
+        if(buy == 1){
+            profit = Math.max(prices[ind]-fee+rec(ind+1, 0, fee, prices, dp), rec(ind+1,1,fee, prices, dp));
+        }
+        return dp[ind][buy]= profit;
+    }
+}
