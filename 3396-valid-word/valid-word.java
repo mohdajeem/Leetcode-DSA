@@ -1,25 +1,18 @@
 class Solution {
     public boolean isValid(String word) {
         if(word.length() < 3) return false;
-        String vowels = "aeiouAEIOU";
-        String cons = "bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYX";
-        String ext = "@#$";
-        String num = "0123456789";
-        int vow = 0, consC = 0, numC = 0;
+        word = word.toLowerCase();
+        // System.out.println(word);
+        boolean hasVowel = false, hasCons = false;
         for(char ch : word.toCharArray()){
-            if(vowels.contains(String.valueOf(ch))){
-                vow++;
-            }
-            if(cons.contains(String.valueOf(ch))){
-                consC++;
-            }
-            if(num.contains(String.valueOf(ch))){
-                numC++;
-            }
-            if(ext.contains(String.valueOf(ch))) return false;
+            if(Character.isLetter(ch)){
+                if(ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u'){
+                        hasVowel = true;
+                } else{
+                    hasCons = true;
+                }
+            } else if(!Character.isDigit(ch)) return false;
         }
-
-        return vow>0 && consC>0;
-
+        return hasVowel && hasCons;
     }
 }
