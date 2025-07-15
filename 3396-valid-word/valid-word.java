@@ -1,18 +1,25 @@
-import java.util.regex.*;
 class Solution {
     public boolean isValid(String word) {
-        if (word.length() < 3) return false;
-        Pattern digitPat = Pattern.compile("\\d+");
-        Matcher digMat = digitPat.matcher(word);
-        Pattern charPar = Pattern.compile("\\w{3,}");
-        Matcher charParm = charPar.matcher(word);
-        Pattern vowelPar = Pattern.compile("[aeiouAEIOU]+");
-        Matcher vowelParM = vowelPar.matcher(word);
-        Pattern p = Pattern.compile("[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]");
-        Matcher pM = p.matcher(word);
-        Pattern doll = Pattern.compile("[@#$]+");
-        Matcher dollM = doll.matcher(word);
-        boolean check = digMat.find() || charParm.find();
-        return check && vowelParM.find() && pM.find() && !dollM.find();
+        if(word.length() < 3) return false;
+        String vowels = "aeiouAEIOU";
+        String cons = "bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYX";
+        String ext = "@#$";
+        String num = "0123456789";
+        int vow = 0, consC = 0, numC = 0;
+        for(char ch : word.toCharArray()){
+            if(vowels.contains(String.valueOf(ch))){
+                vow++;
+            }
+            if(cons.contains(String.valueOf(ch))){
+                consC++;
+            }
+            if(num.contains(String.valueOf(ch))){
+                numC++;
+            }
+            if(ext.contains(String.valueOf(ch))) return false;
+        }
+
+        return vow>0 && consC>0;
+
     }
 }
