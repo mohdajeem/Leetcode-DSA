@@ -1,62 +1,55 @@
 class Solution {
-    public int maximalRectangle(char[][] mat) {
-        int n = mat.length;
-        int m = mat[0].length;
-        int[][] prefixSum = new int[n][m];
-        for(int i=0;i<m;i++){
-            int sum =0;
-            for(int j =0;j<n;j++){
-                sum+=mat[j][i]-'0';
-                if(mat[j][i] == '0') sum =0;
-                prefixSum[j][i]=sum;
+    public int maximalRectangle(char[][] matrix) {
+        int n = matrix.length, m = matrix[0].length;
+        int[][] mat = new int[n][m];
+        // if(n == 1) return maxRec(matrix[0]);
+        for(int j =0;j<m;j++){
+            mat[0][j] = (int)(matrix[0][j]-'0');
+        }
+        for(int i =1;i<n;i++){
+            for(int j = 0;j<m;j++){
+                if(matrix[i][j] == '1'){
+                    // mat[i][j] = (int)(matrix[i-1][j]-'0')+(int)(matrix[i][j]-'0');
+                    mat[i][j] = mat[i-1][j]+1;
+                }
             }
         }
-        for(int[] ar : prefixSum){
-            System.out.println(Arrays.toString(ar));
+        int ans = 0;
+        for(int[] row : mat){
+            ans = Math.max(ans, maxRec(row));
         }
-        int maxArea = 0;
-        for(int[] ar : prefixSum){
-            maxArea = Math.max(maxArea, largestHist(ar));
-        }
-        return maxArea;
+        return ans;
     }
-    public int largestHist(int[] mat){
-        int n = mat.length;
-        int[] ps = prevSmaller(mat, n);
-        int[] ns = nextSmaller(mat,n);
-        int maxArea = 0;
-        for(int i =0;i<n;i++){
-            int cal = (ns[i]-i)+(i-ps[i])-1;
-            maxArea = Math.max(maxArea, cal*mat[i]);        }
-        return maxArea;
-        
-    }
-    public int[] nextSmaller(int[] mat, int n){
-        int[] ns = new int[n];
+    public int maxRec(int[] heights){
+        int n = heights.length;
+        int[] prevSmaller = new int[n];
+        int[] nextSmaller = new int[n];
+        // first solve for previous smaller
         Stack<Integer> st = new Stack<>();
-        Arrays.fill(ns, n);
-        st.push(n-1);
-        for(int i=n-2;i>=0;i--){
-            while(!st.isEmpty() && mat[st.peek()] >= mat[i]){
-                st.pop();
-            }
-            if(!st.isEmpty()) ns[i] = st.peek();
-            st.push(i);
-        }
-        return ns;
-    }
-    public int[] prevSmaller(int[] mat,int n){
-        int[] ps = new int[n];
-        Stack<Integer> st = new Stack<>();
-        Arrays.fill(ps,-1);
+        prevSmaller[0] = -1;
         st.push(0);
-        for(int i=1;i<n;i++){
-            while(!st.isEmpty() && mat[st.peek()]>mat[i]){
+        for(int i =1;i<n;i++){
+            while(!st.isEmpty() && heights[st.peek()] > heights[i]){
                 st.pop();
             }
-            if(!st.isEmpty()) ps[i] = st.peek();
+            if(st.isEmpty()) prevSmaller[i] = -1;
+            else prevSmaller[i] = st.peek();
             st.push(i);
         }
-        return ps;
+        st.clear();
+        for(int i = n-1;i>=0;i--){
+            while(!st.isEmpty() && heights[st.peek()] >= heights[i]){
+                st.pop();
+            }
+            if(st.isEmpty()) nextSmaller[i] = n;
+            else nextSmaller[i] = st.peek();
+            st.push(i);
+        }
+        int ans = 0;
+        for(int i =0;i<n;i++){
+            int dis = (nextSmaller[i]-i)+(i-prevSmaller[i])-1;
+            ans = Math.max(heights[i] * dis, ans);
+        }
+        return ans;
     }
 }
