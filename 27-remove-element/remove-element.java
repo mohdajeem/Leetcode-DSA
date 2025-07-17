@@ -1,12 +1,18 @@
 class Solution {
     public int removeElement(int[] nums, int val) {
-        List<Integer> list = new ArrayList<>();
-        for(int i : nums){
-            if(i != val) list.add(i);
+        int k = 0;
+        for(int i = 0;i<nums.length;i++){
+            while(nums[i] == val){
+                leftShift(nums, i);
+                k++;
+            }
         }
-        for(int i = 0;i<list.size();i++){
-            nums[i] = list.get(i);
+        return nums.length - k;
+    }
+    public void leftShift(int[] nums, int ind){
+        for(int i = ind;i<nums.length;i++){
+            if(i == nums.length-1) nums[i] = -1;
+            else nums[i] = nums[i+1];
         }
-        return list.size();
     }
 }
