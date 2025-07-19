@@ -3,7 +3,6 @@ class Solution {
         
         Arrays.sort(folder);
         int n = folder.length, i =0;
-        for(String st : folder) System.out.println(st);
         List<String> ans = new ArrayList<>();
         while(i<n){
             String last = folder[i];
