@@ -9,9 +9,8 @@ class Solution {
 
         int ansInd = 0;
         int currTank = 0;
-        for(int i =0;i<n;i++){
-            int diff = gas[i]-cost[i];
-            currTank+=diff;
+        for(int i =0;i<n;i++){            
+            currTank += (gas[i]-cost[i]);
             if(currTank < 0){
                 ansInd = i+1;
                 currTank = 0;
