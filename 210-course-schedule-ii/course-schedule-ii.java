@@ -1,60 +1,38 @@
 class Solution {
     public int[] findOrder(int numCourses, int[][] prerequisites) {
+        int n = numCourses;
+        List<Integer> list = new ArrayList<>();
         List<List<Integer>> adj = new ArrayList<>();
-        for(int i =0;i<numCourses;i++){
+        for (int i = 0; i < n; i++)
             adj.add(new ArrayList<>());
+        int[] indegree = new int[n];
+        for (int[] ar : prerequisites) {
+            int u = ar[0];
+            int v = ar[1];
+            adj.get(v).add(u);
+            indegree[u]++;
         }
-        // u->v
-        for(int i =0;i<prerequisites.length;i++){
-            int v = prerequisites[i][0];
-            int u = prerequisites[i][1];
-            adj.get(u).add(v);
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            if (indegree[i] == 0) {
+                q.add(i);
+            }
         }
-        boolean[] vis = new boolean[numCourses];
-        boolean[] path = new boolean[numCourses];
-        for(int i =0;i<numCourses;i++){
-            if(!vis[i]){
-                if(isCyclic(i,vis,path, adj)){
-                    return new int[]{};
+        while (!q.isEmpty()) {
+            int node = q.remove();
+            list.add(node);
+            for (int it : adj.get(node)) {
+                indegree[it]--;
+                if (indegree[it] == 0) {
+                    q.add(it);
                 }
             }
         }
-        // done directed graph
-        int[] ans = new int[numCourses];
-        boolean[] vis1=new boolean[numCourses];
-        Stack<Integer> st = new Stack<>();
-        for(int i =0;i<numCourses;i++){
-            if(!vis1[i]){
-                dfs(i,vis1,st,adj);
-            }
+        if (list.size() != n) return new int[0];  // cycle detected
+        int[] ar = new int[list.size()];
+        for(int i =0;i<list.size();i++){
+          ar[i] = list.get(i);
         }
-        int k=0;
-        while(!st.isEmpty()){
-            ans[k++] = st.pop();
-        }
-        return ans;
-        
-    }
-    public void dfs(int i, boolean[] vis, Stack<Integer> st, List<List<Integer>> adj){
-        vis[i] = true;
-        for(int it : adj.get(i)){
-            if(!vis[it]){
-                dfs(it, vis, st, adj);
-            }
-        }
-        st.push(i);
-    }
-    public boolean isCyclic(int src, boolean[] vis, boolean[] path, List<List<Integer>> adj){
-        vis[src] = true;
-        path[src] = true;
-        for(int it : adj.get(src)){
-            if(!vis[it]){
-                if(isCyclic(it, vis, path,adj)) return true;
-            } else if(path[it] == true){
-                return true;
-            }
-        }
-        path[src]=false;
-        return false;
+        return ar;
     }
 }
