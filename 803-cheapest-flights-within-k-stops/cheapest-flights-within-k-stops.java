@@ -1,55 +1,48 @@
 class Solution {
     public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
-        if(src == dst) return 0;
-
-        List<List<Pair>> adj = new ArrayList<>();
-        for(int i =0;i<n;i++){
-            adj.add(new ArrayList<>());
+        List<List<IPair>> adj = new ArrayList<>();
+        for(int i =0;i<n;i++) adj.add(new ArrayList<>());
+        for(int[] e : flights){
+            int u = e[0];
+            int v = e[1];
+            int p = e[2];
+            adj.get(u).add(new IPair(v,p));
         }
-        for(int i=0;i<flights.length;i++){
-            adj.get(flights[i][0]).add(new Pair(flights[i][1], flights[i][2]));
-        }
-        Queue<pPair> q = new LinkedList<>();
-        int[] dist = new int[n];
-        Arrays.fill(dist, (int)1e9);
-        q.add(new pPair(src, 0, 0));
-        dist[src]=0;
-        while(!q.isEmpty()){
-            pPair p = q.remove();
-            int pNode = p.node;
-            int pDis = p.dis;
-            int K = p.K;
-            if(K>k) continue;
-            for(Pair p1 : adj.get(pNode)){
-                int node = p1.node;
-                int dis = p1.dis;
-                if((dis+pDis) < dist[node]){
-                    dist[node] = (dis+pDis);
-                    q.add(new pPair(node, dist[node], K+1));
+        int[] prc = new int[n];
+        Arrays.fill(prc, Integer.MAX_VALUE);
+        Queue<Pair> pq = new LinkedList<>();
+        prc[src] = 0;
+        pq.add(new Pair(src,0,0));
+        while(!pq.isEmpty()){
+            Pair p = pq.remove();
+            int node = p.node;
+            int price = p.price;
+            int stop = p.stop;
+            if(stop > k) continue;
+            for(IPair it : adj.get(node)){
+                int iNode = it.node;
+                int iPrice = it.price;
+                if(price+iPrice < prc[iNode]){
+                    prc[iNode] = price+iPrice;
+                    pq.add(new Pair(iNode, price+iPrice, stop+1));
                 }
             }
         }
-
-        return dist[dst] == (int) 1e9 ? -1 : dist[dst];
-        
+        return prc[dst] == Integer.MAX_VALUE ? -1 : prc[dst];
+    }
+}
+class IPair{
+    int node, price;
+    IPair(int node, int price){
+        this.node = node;
+        this.price = price;
     }
 }
 class Pair{
-    int node;
-    int dis;
-    public Pair(int node, int dis){
+    int node, price, stop;
+    Pair(int node, int price, int stop){
         this.node = node;
-        this.dis = dis;
-    }
-}
-
-class pPair{
-    int node;
-    int dis;
-    int K;
-    public pPair(int node, int dis, int K){
-        this.node = node;
-        this.dis = dis;
-        this.K = K;
+        this.price = price;
+        this.stop = stop;
     }
 }
