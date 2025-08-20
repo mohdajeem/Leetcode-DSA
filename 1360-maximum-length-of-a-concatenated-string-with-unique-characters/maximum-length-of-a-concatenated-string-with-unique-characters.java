@@ -1,7 +1,27 @@
 class Solution {
     public int maxLength(List<String> arr) {
         Map<String, Integer> dp = new HashMap<>();
-        return rec(0, arr, "", dp);
+        return rec(0,"",arr, dp);
+    }
+    public int rec(int ind, String s, List<String> arr, Map<String, Integer> dp){
+        if(ind >= arr.size()){
+            return s.length();
+        }
+        if(dp.containsKey(s)) return dp.get(s);
+        String str = arr.get(ind);
+        int notTake = 0;
+        int take = 0;
+        if(hasUnique(str,s)){
+            take = rec(ind+1,s + str, arr,dp);
+            notTake = rec(ind+1, s, arr, dp);
+        } else{
+            notTake = rec(ind+1, s,arr,dp);
+        }
+
+        int res = Math.max(take, notTake);
+        dp.put(s,res);
+        return res;
+
     }
     public boolean hasUnique(String s1, String s2){
         int[] arr = new int[26];
@@ -14,20 +34,5 @@ class Solution {
         }
         return true;
     }
-    public int rec(int ind, List<String> arr, String temp, Map<String, Integer> dp){
-        if(ind >= arr.size()) return temp.length();
-        if(dp.containsKey(temp)) return dp.get(temp);
-        String s = arr.get(ind);
-        int exc = 0, inc =0;
-        if(hasUnique(s, temp)){
-            exc = rec(ind+1, arr, temp, dp);
-            inc = rec(ind+1, arr, temp+s, dp);
-        } else{
-            exc = rec(ind+1,arr, temp, dp);
-        }
 
-        int res = Math.max(exc, inc);
-        dp.put(temp, res);
-        return dp.get(temp);
-    }
 }
