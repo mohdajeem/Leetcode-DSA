@@ -1,22 +1,20 @@
 class Solution {
     public int trap(int[] height) {
         int n = height.length;
-        int[] maxL = new int[n];
-        int[] maxR = new int[n];
-        maxL[0]=height[0];
-        for(int i=1;i<n;i++){
-            maxL[i] =Math.max(height[i],maxL[i-1]);
+        int[] lm = new int[n];
+        int[] rm = new int[n];
+        lm[0] = height[0];
+        for(int i = 1;i<n;i++){
+            lm[i] = Math.max(lm[i-1], height[i]);
         }
-        maxR[n-1]=height[n-1];
-        for(int i=n-2;i>=0;i--){
-            maxR[i]=Math.max(height[i],maxR[i+1]);
+        rm[n-1] = height[n-1];
+        for(int i = n-2;i>=0;i--){
+            rm[i] = Math.max(rm[i+1], height[i]);
         }
-
         int ans = 0;
         for(int i =0;i<n;i++){
-            ans = ans + (Math.min(maxL[i],maxR[i]) - height[i]);
+            ans += Math.min(rm[i], lm[i]) - height[i];
         }
         return ans;
-        
     }
 }
