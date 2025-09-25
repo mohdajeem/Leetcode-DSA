@@ -1,26 +1,25 @@
 class Solution {
     public List<List<String>> partition(String s) {
-        List<List<String>> ans = new ArrayList<>();
-        rec(0,s,new ArrayList<>(), ans);
-        return ans;
+        List<List<String>> result = new ArrayList<>();
+        rec(0, s, new ArrayList<>(), result);
+        return result;
     }
-    public void rec(int ind, String s, List<String> list, List<List<String>> ans){
-        if(ind == s.length()){
-            ans.add(new ArrayList<>(list));
+    public void rec(int i, String s, List<String> list, List<List<String>> result){
+        if(i == s.length()){
+            result.add(new ArrayList<>(list));
             return;
         }
-
-        // first i will iterate over each element
-        for(int i = ind; i< s.length();i++){
-            if(isPalindrome(s,ind, i)){
-                list.add(s.substring(ind,i+1));
-                rec(i+1, s,list,ans);
+        
+        for(int j = i;j<s.length();j++){
+            if(isPalindrome(s, i, j)){
+                list.add(s.substring(i,j+1));
+                rec(j+1, s, list, result);
                 list.remove(list.size()-1);
             }
         }
     }
     public boolean isPalindrome(String s, int i, int j){
-        while(i<j){
+        while(i < j){
             if(s.charAt(i++) != s.charAt(j--)) return false;
         }
         return true;
